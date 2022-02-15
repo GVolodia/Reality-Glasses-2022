@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		9C540AFA27BB7E8A007733A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C540AF927BB7E8A007733A5 /* AppDelegate.swift */; };
 		9C540AFC27BB7E8A007733A5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C540AFB27BB7E8A007733A5 /* ContentView.swift */; };
-		9C540AFE27BB7E8A007733A5 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 9C540AFD27BB7E8A007733A5 /* Experience.rcproject */; };
 		9C540B0027BB7E8B007733A5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C540AFF27BB7E8B007733A5 /* Assets.xcassets */; };
 		9C540B0327BB7E8B007733A5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C540B0227BB7E8B007733A5 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -18,7 +17,6 @@
 		9C540AF627BB7E8A007733A5 /* Reality Glasses 2022.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Reality Glasses 2022.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C540AF927BB7E8A007733A5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9C540AFB27BB7E8A007733A5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		9C540AFD27BB7E8A007733A5 /* Experience.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = Experience.rcproject; sourceTree = "<group>"; };
 		9C540AFF27BB7E8B007733A5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9C540B0227BB7E8B007733A5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -55,7 +53,6 @@
 			children = (
 				9C540AF927BB7E8A007733A5 /* AppDelegate.swift */,
 				9C540AFB27BB7E8A007733A5 /* ContentView.swift */,
-				9C540AFD27BB7E8A007733A5 /* Experience.rcproject */,
 				9C540AFF27BB7E8B007733A5 /* Assets.xcassets */,
 				9C540B0127BB7E8B007733A5 /* Preview Content */,
 			);
@@ -142,7 +139,6 @@
 			files = (
 				9C540AFC27BB7E8A007733A5 /* ContentView.swift in Sources */,
 				9C540AFA27BB7E8A007733A5 /* AppDelegate.swift in Sources */,
-				9C540AFE27BB7E8A007733A5 /* Experience.rcproject in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,6 +279,7 @@
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -314,6 +311,7 @@
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
