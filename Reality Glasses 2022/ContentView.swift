@@ -38,6 +38,26 @@ struct ViewTwo : View {
 
 struct ARViewContainer: UIViewRepresentable {
     
+    func createBox() -> Entity {
+        // create mesh (geometry)
+        let mesh = MeshResource.generateBox(size: 0.2)
+        // create entity based on mesh
+        let entity = ModelEntity(mesh: mesh)
+        
+        return entity
+    }
+    
+    func createSphere(x: Float = 0, y: Float = 0, z: Float = 0) -> Entity {
+        // create sphere mesh
+        let sphereMesh = MeshResource.generateSphere(radius: 0.075)
+        
+        // create sphere entity
+        let sphereEntity = ModelEntity(mesh: sphereMesh)
+        sphereEntity.position = SIMD3(x, y, z)
+        
+        return sphereEntity
+    }
+    
     func makeUIView(context: Context) -> ARView {
         // creating AR view
         let arView = ARView(frame: .zero)
@@ -48,6 +68,15 @@ struct ARViewContainer: UIViewRepresentable {
         
         // run face tracking session
         arView.session.run(configuration, options: [])
+        
+        // create face anchor
+        let faceAnchor = AnchorEntity(.face)
+        
+        // adding box to the face anchor
+        faceAnchor.addChild(createSphere(y: 0.25))
+        
+        // add face anchor to the scene
+        arView.scene.anchors.append(faceAnchor)
         
         return arView
     }
