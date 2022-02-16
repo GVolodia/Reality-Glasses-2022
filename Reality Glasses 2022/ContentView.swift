@@ -8,37 +8,90 @@ import ARKit
 import SwiftUI
 import RealityKit
 
-
+enum GlassColors: String, CaseIterable {
+    case red = "red"
+    case green = "green"
+    case black = "black"
+}
 
 struct ContentView : View {
+    
     var body: some View {
         
         guard ARFaceTrackingConfiguration.isSupported else {
-            return AnyView(ViewOne())
+            return AnyView(ErrorView())
         }
         
-        return AnyView(ViewTwo())
+        return AnyView(NormalView())
     }
 }
 
 
 
-struct ViewOne : View {
+struct ErrorView : View {
     var body: some View {
         Text("Sorry, face tracking configuration is not supported by your device.").font(.title)
     }
 }
 
-struct ViewTwo : View {
+struct NormalView : View {
+    @State private var glassColor: GlassColors = .black
+    
     var body: some View {
-        
-        return ARViewContainer().edgesIgnoringSafeArea(.all)
+        VStack {
+            Section() {
+                ARViewContainer(glassColor: glassColor).edgesIgnoringSafeArea(.all)
+            }
+            // create colors picker
+                Picker("", selection: $glassColor) {
+                    ForEach(GlassColors.allCases, id: \.self) {
+                        Text($0.rawValue)
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .padding(.horizontal, 10)
+            
+        }
     }
 }
 
 struct ARViewContainer: UIViewRepresentable {
+    var glassColor: GlassColors
     
-    func createBox() -> Entity {
+    
+    
+    func makeUIView(context: Context) -> ARView {
+        // creating AR view
+        let arView = ARView(frame: .zero)
+        
+        // creating face tracking configuration
+        let configuration = ARFaceTrackingConfiguration()
+        configuration.isLightEstimationEnabled = true
+        
+        // run face tracking session
+        arView.session.run(configuration, options: [])
+        
+        return arView
+    }
+    
+    func updateUIView(_ uiView: ARView, context: Context) {
+        // clearing the scene
+        uiView.scene.anchors.removeAll()
+        
+        switch glassColor {
+        case .red:
+            uiView.scene.anchors.append(createGlasses(color: .red))
+        case .green:
+            uiView.scene.anchors.append(createGlasses(color: .green))
+        case .black:
+            uiView.scene.anchors.append(createGlasses(color: .black))
+        }
+        
+    }
+    
+    // MARK: - Methods
+    
+    private func createBox() -> Entity {
         // create mesh (geometry)
         let mesh = MeshResource.generateBox(size: 0.2)
         // create entity based on mesh
@@ -47,12 +100,17 @@ struct ARViewContainer: UIViewRepresentable {
         return entity
     }
     
-    func createCircle(x: Float = 0, y: Float = 0, z: Float = 0) -> Entity {
+    private func createCircle(x: Float = 0, y: Float = 0, z: Float = 0, color: UIColor) -> Entity {
         // create circle mesh
         let circleMesh = MeshResource.generateBox(size: 0.05, cornerRadius: 0.025)
         
         // create material
-        let circleMaterial = SimpleMaterial(color: .blue, isMetallic: true)
+        var circleMaterial = SimpleMaterial(color: color, isMetallic: false)
+        if color == .black {
+        circleMaterial.baseColor = MaterialColorParameter.color(color.withAlphaComponent(0.95))
+        } else {
+            circleMaterial.baseColor = MaterialColorParameter.color(color.withAlphaComponent(0.5))
+        }
         
         // create circle entity
         let circleEntity = ModelEntity(mesh: circleMesh, materials: [circleMaterial])
@@ -64,7 +122,18 @@ struct ARViewContainer: UIViewRepresentable {
         return circleEntity
     }
     
-    func createSphere(x: Float = 0,
+    private func createGlasses(color: UIColor) -> AnchorEntity {
+        // create face anchor
+        let faceAnchor = AnchorEntity(.face)
+        
+        faceAnchor.addChild(createCircle(x: 0.035, y: 0.025, z: 0.06, color: color))
+        faceAnchor.addChild(createCircle(x: -0.035, y: 0.025, z: 0.06, color: color))
+        faceAnchor.addChild(createSphere(z: 0.06, radius: 0.025))
+        
+        return faceAnchor
+    }
+    
+    private func createSphere(x: Float = 0,
                       y: Float = 0,
                       z: Float = 0,
                       color: UIColor = .red,
@@ -78,34 +147,6 @@ struct ARViewContainer: UIViewRepresentable {
         sphereEntity.position = SIMD3(x, y, z)
         
         return sphereEntity
-    }
-    
-    func makeUIView(context: Context) -> ARView {
-        // creating AR view
-        let arView = ARView(frame: .zero)
-        
-        // creating face tracking configuration
-        let configuration = ARFaceTrackingConfiguration()
-        configuration.isLightEstimationEnabled = true
-        
-        // run face tracking session
-        arView.session.run(configuration, options: [])
-        
-        // create face anchor
-        let faceAnchor = AnchorEntity(.face)
-        
-        // adding circles to the face anchor
-        faceAnchor.addChild(createCircle(x: 0.035, y: 0.025, z: 0.06))
-        faceAnchor.addChild(createCircle(x: -0.035, y: 0.025, z: 0.06))
-        faceAnchor.addChild(createSphere(z: 0.06, radius: 0.025))
-        
-        // add face anchor to the scene
-        arView.scene.anchors.append(faceAnchor)
-        
-        return arView
-    }
-    
-    func updateUIView(_ uiView: ARView, context: Context) {
     }
 }
 
