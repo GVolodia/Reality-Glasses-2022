@@ -47,12 +47,34 @@ struct ARViewContainer: UIViewRepresentable {
         return entity
     }
     
-    func createSphere(x: Float = 0, y: Float = 0, z: Float = 0) -> Entity {
+    func createCircle(x: Float = 0, y: Float = 0, z: Float = 0) -> Entity {
+        // create circle mesh
+        let circleMesh = MeshResource.generateBox(size: 0.05, cornerRadius: 0.025)
+        
+        // create material
+        let circleMaterial = SimpleMaterial(color: .blue, isMetallic: true)
+        
+        // create circle entity
+        let circleEntity = ModelEntity(mesh: circleMesh, materials: [circleMaterial])
+        circleEntity.position = SIMD3(x, y, z)
+        circleEntity.scale.x = 1.1
+        circleEntity.scale.z = 0.01
+        
+        
+        return circleEntity
+    }
+    
+    func createSphere(x: Float = 0,
+                      y: Float = 0,
+                      z: Float = 0,
+                      color: UIColor = .red,
+                      radius: Float = 0.05) -> Entity {
         // create sphere mesh
-        let sphereMesh = MeshResource.generateSphere(radius: 0.075)
+        let sphereMesh = MeshResource.generateSphere(radius: radius)
+        let sphereMaterial = SimpleMaterial(color: color, isMetallic: false)
         
         // create sphere entity
-        let sphereEntity = ModelEntity(mesh: sphereMesh)
+        let sphereEntity = ModelEntity(mesh: sphereMesh, materials: [sphereMaterial])
         sphereEntity.position = SIMD3(x, y, z)
         
         return sphereEntity
@@ -72,8 +94,10 @@ struct ARViewContainer: UIViewRepresentable {
         // create face anchor
         let faceAnchor = AnchorEntity(.face)
         
-        // adding box to the face anchor
-        faceAnchor.addChild(createSphere(y: 0.25))
+        // adding circles to the face anchor
+        faceAnchor.addChild(createCircle(x: 0.035, y: 0.025, z: 0.06))
+        faceAnchor.addChild(createCircle(x: -0.035, y: 0.025, z: 0.06))
+        faceAnchor.addChild(createSphere(z: 0.06, radius: 0.025))
         
         // add face anchor to the scene
         arView.scene.anchors.append(faceAnchor)
